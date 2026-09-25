@@ -1,7 +1,7 @@
 using System;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
+using System.Collections;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,6 +12,10 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private TMP_Text timerBox;
     private float time;
+
+    [SerializeField] private TMP_Text returnCandy;
+    private bool returnCandyMessage = true;
+    private bool sendCandyMessage = true;
 
     private bool hasDeliverdAllCandys = false;
 
@@ -39,6 +43,18 @@ public class UIManager : MonoBehaviour
         {
             UpdateTimer();
         }
+        else 
+        {
+            PlayerPrefs.SetFloat("currentTime", time);
+            PlayerPrefs.Save();
+            returnCandyMessage = false;
+        }
+
+        if (points >= allCandy.Length && !hasDeliverdAllCandys && returnCandyMessage && sendCandyMessage)
+        {
+            sendCandyMessage = false;
+            StartCoroutine(ReturnCandyMessage());
+        }
     }
     private void DisplayPoints(int addPoints)
     {
@@ -55,5 +71,17 @@ public class UIManager : MonoBehaviour
     private void CheckIfhasDeliverdAllCandys(bool _hasDeliverdAllCandys)
     {
         hasDeliverdAllCandys = _hasDeliverdAllCandys;
+    }
+
+    private IEnumerator ReturnCandyMessage()
+    {
+        if (returnCandyMessage)
+        {
+            returnCandy.enabled = true;
+            yield return new WaitForSeconds(1);
+            returnCandy.enabled = false;
+            yield return new WaitForSeconds(1);
+            StartCoroutine(ReturnCandyMessage());
+        }
     }
 }

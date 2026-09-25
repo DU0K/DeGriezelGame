@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 public class CandyCheck : MonoBehaviour
 {
     [SerializeField] private TMP_Text DialogueBox;
@@ -9,9 +10,9 @@ public class CandyCheck : MonoBehaviour
     [SerializeField] private string DialogueMessageWin;
     [SerializeField] private string DialogueMessageNoWin;
 
-    private bool dialogueFinished = false;
     private int currentPoints;
     private GameObject[] allCandy;
+    private Animator animator;
 
     public static event Action<bool> deliverdAllCandy;
 
@@ -27,17 +28,21 @@ public class CandyCheck : MonoBehaviour
     private void Start()
     {
         allCandy = GameObject.FindGameObjectsWithTag("Candy");
+        animator = GetComponent<Animator>();
     }
     private IEnumerator OnTriggerEnter2D(Collider2D collision)
     {
         if (currentPoints >= allCandy.Length)
         {
+            animator.Play("GhostAngryCandy");
             deliverdAllCandy?.Invoke(true);
             DialogueBox.text = DialogueMessageWin;
-            yield return new WaitForSeconds(dialogueWait);
+            yield return new WaitForSeconds(dialogueWait * 2);
+            SceneManager.LoadScene("Outro");
         }
         else if (currentPoints < allCandy.Length)
         {
+            animator.Play("GhostAngry");
             DialogueBox.text = DialogueMessageNoWin;
             yield return new WaitForSeconds(dialogueWait);
             DialogueBox.text = "";

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ground
   - Candy
+  - Ghost
   layers:
   - Default
   - TransparentFX

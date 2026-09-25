@@ -1,3 +1,4 @@
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -8,14 +9,18 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float jumpForce = 1f;
     [SerializeField] private int voidDepth = -30;
     private bool canJump = false;
+    private Transform respawnPoint;
+    private Vector3 respawnPointPosition;
 
     [SerializeField] private InputActionAsset action;
     private InputActionMap player;
     private InputAction move;
     private InputAction jump;
 
-    Rigidbody2D rb;
-    SpriteRenderer spriteRenderer;
+    private Rigidbody2D rb;
+    private SpriteRenderer spriteRenderer;
+    private Animator animator;
+    private CinemachineCamera cineMachine;
 
     private void Awake()
     {
@@ -25,6 +30,10 @@ public class PlayerMovement : MonoBehaviour
 
         rb = GetComponent<Rigidbody2D>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        animator = GetComponent<Animator>();
+        cineMachine = GameObject.FindAnyObjectByType<CinemachineCamera>();
+
+        respawnPointPosition = transform.position;
     }
     private void OnEnable()
     {
@@ -61,16 +70,38 @@ public class PlayerMovement : MonoBehaviour
         {
             rb?.AddForce(Vector3.up * jumpForce);
             canJump = false;
+            animator.Play("PumpkingJump");
         }
+        
     }
 
     private void RespawnChecker()
     {
         if (transform.position.y <= voidDepth)
         {
-            transform.position = new Vector2(-6.94f, 0.36f);
+            StartCoroutine(ExecuteRespawn());
         }
     }
+
+    private System.Collections.IEnumerator ExecuteRespawn()
+    {
+        yield return new WaitForEndOfFrame();
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.angularVelocity = 0f;
+        }
+        transform.position = respawnPointPosition;
+        transform.rotation = Quaternion.identity;
+        if (cineMachine != null)
+        {
+            cineMachine.ForceCameraPosition(respawnPointPosition, Quaternion.identity);
+            cineMachine.transform.rotation = Quaternion.identity;
+        }
+    }
+
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

@@ -42,7 +42,7 @@ public class OutroManager : MonoBehaviour
             foreach (string entry in scoreEntries)
             {
                 string[] details = entry.Split(':');
-                if (details.Length == 2 && float.TryParse(details[1], out float parsedTime))
+                if (details.Length == 2 && float.TryParse(details[1], NumberStyles.Any, CultureInfo.InvariantCulture, out float parsedTime))
                 {
                     scoreList.Add(new PlayerScore { Name = details[0], Time = parsedTime });
                 }
@@ -57,6 +57,7 @@ public class OutroManager : MonoBehaviour
         PlayerPrefs.SetString("nameAndScore", updatedScores);
         PlayerPrefs.Save();
     }
+
 
     private class PlayerScore
     {

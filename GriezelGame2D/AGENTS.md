@@ -1,0 +1,4 @@
+<!-- UNITY CODE ASSIST INSTRUCTIONS START -->
+- Project name: GriezelGame2D
+- Unity version: Unity 6000.3.17f1
+<!-- UNITY CODE ASSIST INSTRUCTIONS END -->

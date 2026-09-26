@@ -701,7 +701,7 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 0}
-  m_TextViewport: {fileID: 0}
+  m_TextViewport: {fileID: 536877081}
   m_TextComponent: {fileID: 536877082}
   m_Placeholder: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}

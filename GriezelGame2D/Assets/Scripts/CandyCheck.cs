@@ -27,6 +27,7 @@ public class CandyCheck : MonoBehaviour
     }
     private void Start()
     {
+        DialogueBox.text = "";
         allCandy = GameObject.FindGameObjectsWithTag("Candy");
         animator = GetComponent<Animator>();
     }

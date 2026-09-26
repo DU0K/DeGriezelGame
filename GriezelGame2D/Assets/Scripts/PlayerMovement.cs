@@ -107,6 +107,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Ground"))
         {
+            animator.Play("PumpkingIdle");
             canJump = true;
         }
     }

@@ -7,7 +7,7 @@ public class ScoreBoard : MonoBehaviour
 
     private void Start()
     {
-        string nameAndScore = PlayerPrefs.GetString("nameAndScore", "Geen scores bekend");
+        string nameAndScore = PlayerPrefs.GetString("nameAndScore", "No scores yet");
         string formattedScoreBoard = nameAndScore.Replace(",", "\n").Replace(":", " - ");
         scoreBoard.text = formattedScoreBoard;
     }
